@@ -62,23 +62,20 @@ VItem VItem::operator =(const VItem& rhs) {
 std::istream& operator>>(std::istream &is, VItem& v) {
     std::string temp;
     getline(is, temp);
-    //VItem tempV(temp);
-    //tempV.word = temp;
-    //tempV.findPOS(temp);  
     
-    //v = tempV;
+    v.word = temp;
+    v.findPOS(temp);  
     
     return is;
 };
 
 //returns word to output stream
 std::ostream& operator<<(std::ostream& os, const VItem& v) {
-    //std::cout << v.word;
     os << v.word;
     return os;
 };
 
-std::string VItem::getWord() {
+std::string VItem::getWord() const {
     return word;
 }
 
@@ -86,7 +83,7 @@ void VItem::setWord(std::string w) {
     word = w;
 }
 
-std::string VItem::getPOS() {
+std::string VItem::getPOS() const {
     return pos;
 }
 

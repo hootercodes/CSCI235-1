@@ -11,7 +11,7 @@
 #include "corpus.h"
 
 Corpus::Corpus() {
-    Sentence* sentences;
+    Sentence sentences[100];
 }
 
 Corpus::~Corpus() {
@@ -20,9 +20,8 @@ Corpus::~Corpus() {
 
 //initializes a Corpus object with n randomly generated sentences
 Corpus::Corpus(int n) {
-    Sentence* sentences;
     for(int i = 0; i < n; ++i) {
-        sentences[i] = new Sentence( (rand()%2) );
+        this->sentences[i] = Sentence((rand()%2));
         //std::cout << sentences[i] << std::endl;
     }
 }
@@ -41,9 +40,8 @@ std::istream& operator>>(std::istream& is, Corpus& c) {
 
 //returns Date in MM/DD/YYYY format to output stream
 std::ostream& operator<<(std::ostream& os, const Corpus& c) {
-  for (int i = 0; i < (sizeof(c.sentences)/sizeof(*c.sentences)); ++i) {
-      //std::cout << c.sentences[i] << std::endl;
-      os << c.sentences[i] << std::endl;
+    for (int i = 0; i < (sizeof(c.sentences)/sizeof(*c.sentences)); ++i) {
+        os << c.sentences[i] << std::endl;
   }
   return os;
 };

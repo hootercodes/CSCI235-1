@@ -26,9 +26,9 @@ public:
      VItem operator=(const VItem& rhs);
      friend std::istream& operator>>(std::istream& is, VItem& v);
      friend std::ostream& operator<<(std::ostream& os, const VItem& v);
-     std::string getWord();
+     std::string getWord() const;
      void setWord(std::string w);
-     std::string getPOS();
+     std::string getPOS() const;
 private:
     std::string findPOS(std::string w);
     std::string toLower(std::string str);

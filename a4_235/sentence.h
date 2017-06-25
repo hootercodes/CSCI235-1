@@ -22,6 +22,6 @@ public:
     Sentence translate();
 private:
     VItem words[MAX_WORDS];
-    
+    int length;
     VItem getVItem(int i);
 };

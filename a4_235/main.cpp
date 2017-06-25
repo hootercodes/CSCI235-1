@@ -16,6 +16,9 @@ Corpus translate (Corpus c, VItem v[]);
  * 
  */
 int main(int argc, char** argv) {
+    
+    srand (time(NULL));
+
     Corpus eng; //eng--
     Corpus ENG; //eng++
     
@@ -26,12 +29,22 @@ int main(int argc, char** argv) {
     
     is >> eng;
     ENG = translate(eng, vocab());
-    //os << ENG;
+    os << ENG;
+    /*
+    Corpus rando(100);
+    Corpus randi;
     
-    Corpus rando(5);
-    std::cout << rando;
-    os << rando;
+    std::ofstream randos;
+    randos.open("randin.txt");
+    randos << rando;
     
+    std::ifstream randis;
+    randis.open("randin.txt");
+    randis >> randi;
+    
+    randi = translate(randi, vocab());
+    os << randi << std::endl;
+    */
     is.close();
     os.close();
      

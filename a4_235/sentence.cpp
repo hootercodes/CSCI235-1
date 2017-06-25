@@ -12,6 +12,7 @@
 
 Sentence::Sentence() {
     VItem words[MAX_WORDS];
+    length = 0;
 }
 
 Sentence::~Sentence() {
@@ -24,6 +25,10 @@ Sentence::Sentence(bool r) {
     //VItem* words;
     int i = 0;
     if (r) {
+        if(rand()%2){
+            words[i] = VItem("article", 0);
+            i++;
+        }
         while(rand() % 2){
             words[i] = VItem("adjective", 0);
             ++i;
@@ -31,18 +36,32 @@ Sentence::Sentence(bool r) {
         words[i] = VItem("noun", 1);
         ++i;
         words[i] = VItem("verb", 0);
-        ++i;
-        while(rand() % 2){
-            words[i] = VItem("adjective", 0);
-            ++i;
+        if(words[i].getWord() == "is") {
+           ++i;
+           words[i] = VItem("adjective", 0);
+           ++i;
         }
-        words[i] = VItem("noun", 0);
-        ++i;
-        
+        else {
+           ++i;
+           if(rand()%2){
+               words[i] = VItem("article", 0);
+               i++;
+           }
+           while(rand() % 2){
+                words[i] = VItem("adjective", 0);
+                ++i;
+            }
+            words[i] = VItem("noun", 0);
+            ++i;
+        }        
     }
     else {
         words[i] = VItem("is");
         ++i;
+        if(rand()%2){
+            words[i] = VItem("article", 0);
+            i++;
+        }
         while(rand() % 2){
             words[i] = VItem("adjective", 0);
             ++i;
@@ -51,10 +70,8 @@ Sentence::Sentence(bool r) {
         ++i;
         words[i] = VItem("adjective", 0);
         ++i;
-    }
-    std::cout << *this;
-    
-    
+    } 
+    length = i;
 }
 
 std::istream& operator>>(std::istream& is, Sentence& s) {
@@ -67,14 +84,16 @@ std::istream& operator>>(std::istream& is, Sentence& s) {
        ss >> s.words[i];
        i++;
     }
+    s.length = i;
     return is;
 };
 
 //returns Date in MM/DD/YYYY format to output stream
 std::ostream& operator<<(std::ostream& os, const Sentence& s) {
-    for (int i = 0; i < (sizeof(s.words)/sizeof(*s.words)); ++i) {
-        //std::cout << s.words[i] << " ";
-        os << s.words[i] << " ";
+    for (int i = 0; i < s.length; ++i) {
+        if(s.words[i].getWord() != "") {
+            os << s.words[i] << " ";
+        }
     }
     return os;
 };
@@ -90,7 +109,7 @@ Sentence Sentence::translate() {
     VItem temp;
     int j;
     
-    for (int i = 0; i < (sizeof(words)/sizeof(*words)); ++i) {
+    for (int i = 0; i < length; ++i) {
         if(words[i].getPOS() == "noun") {
             std::string suffix;
             if (subject) {
@@ -119,13 +138,10 @@ Sentence Sentence::translate() {
         }
     }
     
-    
-            for(; j < ((sizeof(words)/sizeof(*words))-1); ++j) {
-                words[j] = words[j+1];
-            }            
-            words[j] = temp;
-    
-    
+    for(; j < length-1; ++j) {
+        words[j] = words[j+1];
+    }
+    words[j] = temp;
     
     return *this;
 }
