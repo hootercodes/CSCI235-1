@@ -12,8 +12,8 @@
 
 //declares 'word' and 'pos' strings
 VItem::VItem() {
-    word = "default";
-    pos = "default";
+    word = "";
+    pos = "";
 }
 
 //deletes 'word' and 'pos' strings
@@ -25,7 +25,26 @@ VItem::~VItem() {
 //takes a word w as a parameter, then finds Part of Speech
 VItem::VItem(std::string w) {
     word = w;
+    this->findPOS(w);
 }
+
+//takes a Part of String as a parameter, then randomly generates a word
+VItem::VItem(std::string p, int s) {
+    VItem options[11];
+    int counter = 0;
+    VItem *vocabu;
+    vocabu = vocab();
+    for (int i = 0; i < sizeof(*vocabu); ++i) {
+    	if (p == (vocabu+i)->pos) {
+            options[counter] = *(vocabu+i);
+            ++counter;
+        }
+    }
+    VItem v = options[rand() % counter];
+    word = v.word;
+    pos = v.pos;
+}
+
 
 //takes a word w and a Part Of Speech p as parameters
 VItem::VItem(std::string w, std::string p) {
@@ -33,24 +52,29 @@ VItem::VItem(std::string w, std::string p) {
     pos = p;
 }
 
+VItem VItem::operator =(const VItem& rhs) {
+    this->word = rhs.word;
+    this->pos = rhs.pos;
+    return *this;
+};
+
 // takes in word from input stream, then finds Part of Speech
 std::istream& operator>>(std::istream &is, VItem& v) {
-   std::string temp;
-   //getline(is, temp);
-   is >> temp;
-   std::cout << temp << std::endl;
-   //std::cout << v.word << std::endl;
-    //std::cout << v.pos << std::endl;
+    std::string temp;
+    getline(is, temp);
+    //VItem tempV(temp);
+    //tempV.word = temp;
+    //tempV.findPOS(temp);  
     
-    v.word = temp;
-    //v.pos = v.findPOS(v.word);*/
-  //is >> v.word >> v.pos;
-  return is;
+    //v = tempV;
+    
+    return is;
 };
 
 //returns word to output stream
 std::ostream& operator<<(std::ostream& os, const VItem& v) {
-    //os << v.word << " (" << v.pos << ")";
+    //std::cout << v.word;
+    os << v.word;
     return os;
 };
 
@@ -71,16 +95,14 @@ std::string VItem::findPOS(std::string w) {
     std::string p;
     VItem * vocabu;
     vocabu = vocab();
-    //std::cout << sizeof(*vocabu) << std::endl;
     for (int i = 0; i < sizeof(*vocabu); ++i) {
-        //std::cout << (vocabu+i)->word << (vocabu+i)->pos << std::endl;
     	if (this->toLower(w) == (vocabu+i)->word) {
             p = (vocabu+i)->pos;
             break;
         }
     }
     if (p == "") {
-        std::invalid_argument(w + " is not a recognized part of speech in the vocabulary.");
+        std::invalid_argument(w + " is not a recognized word in the vocabulary.");
     }
     pos = p;
     return pos;
@@ -98,7 +120,6 @@ std::string VItem::toLower(std::string str) {
     str[i] = tolower(c);
     i++;
   }
-    std::cout << str << std::endl;
     return str;
 }
 
@@ -110,14 +131,12 @@ VItem * vocab() {
     vocab[2] = VItem("fish", "noun");
     vocab[3] = VItem("strong", "adjective");
     vocab[4] = VItem("short", "adjective");
-    //std::cout << sizeof(vocab)/sizeof(vocab[0]) << std::endl;
     vocab[5] = VItem("red", "adjective");
     vocab[6] = VItem("caught", "verb");
     vocab[7] = VItem("kissed", "verb");
     vocab[8] = VItem("is", "verb");
     vocab[9] = VItem("a", "article");
     vocab[10] = VItem("the", "article");
-    //std::cout << sizeof(vocab)/sizeof(vocab[0]) << std::endl;
     return vocab;
 };
 

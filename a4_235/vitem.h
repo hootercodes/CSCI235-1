@@ -11,6 +11,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <cstdlib>
 
 #ifndef VITEM_H
 #define VITEM_H
@@ -20,7 +21,9 @@ public:
      VItem();
      ~VItem();
      VItem(std::string w);
+     VItem(std::string p, int s);
      VItem(std::string w, std::string p);
+     VItem operator=(const VItem& rhs);
      friend std::istream& operator>>(std::istream& is, VItem& v);
      friend std::ostream& operator<<(std::ostream& os, const VItem& v);
      std::string getWord();

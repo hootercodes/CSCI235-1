@@ -17,12 +17,12 @@ class Corpus {
  public:
      Corpus();
      ~Corpus();
-     Corpus(std::istream& is);
+     Corpus(int n);
      friend std::istream& operator>>(std::istream& is, Corpus& c);
      friend std::ostream& operator<<(std::ostream& os, const Corpus& c);
      Corpus translate(VItem v[]);
  private:
-     Sentence* sentences;
+     Sentence sentences[100];
 };
 
 #endif /* CORPUS_H */

@@ -25,9 +25,12 @@ int main(int argc, char** argv) {
     os.open("eng++.txt");
     
     is >> eng;
-    //ENG = eng;
     ENG = translate(eng, vocab());
-    os << ENG;
+    //os << ENG;
+    
+    Corpus rando(5);
+    std::cout << rando;
+    os << rando;
     
     is.close();
     os.close();

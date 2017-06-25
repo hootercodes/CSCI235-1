@@ -10,15 +10,18 @@
 
 #include "vitem.h"
 
+const int MAX_WORDS = 100;
+
 class Sentence {
 public:
     Sentence();
     ~Sentence();
-    Sentence(VItem w[]);
+    Sentence(bool r);
     friend std::istream& operator>>(std::istream& is, Sentence& s);
     friend std::ostream& operator<<(std::ostream& os, const Sentence& s);
-    Sentence translate(VItem v[]);
+    Sentence translate();
 private:
-    VItem words[10];
+    VItem words[MAX_WORDS];
+    
     VItem getVItem(int i);
 };
