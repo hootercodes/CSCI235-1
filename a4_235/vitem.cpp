@@ -3,7 +3,7 @@
  * Author: Julian Tutuncu-Macias
  * Date Created: 6/22/2017
  * Course: Spring 2017, CSCI 235-03, Mon & Wed 5:35-6:50pm
- * Professor: Michael Garod
+ * Professors: William Sakas, Michael Garod
  * Purpose: "Assignment 4"
  * Description: implements all class and function definitions in vitem.h
 */
@@ -14,12 +14,6 @@
 VItem::VItem() {
     word = "";
     pos = "";
-}
-
-//deletes 'word' and 'pos' strings
-VItem::~VItem() {
-	//delete word;
-	//delete pos;
 }
 
 //takes a word w as a parameter, then finds Part of Speech
@@ -41,8 +35,7 @@ VItem::VItem(std::string p, int s) {
         }
     }
     VItem v = options[rand() % counter];
-    word = v.word;
-    pos = v.pos;
+    *this = v;
 }
 
 
@@ -52,6 +45,7 @@ VItem::VItem(std::string w, std::string p) {
     pos = p;
 }
 
+//copies over 'word' and 'pos' from right hand side VItem
 VItem VItem::operator =(const VItem& rhs) {
     this->word = rhs.word;
     this->pos = rhs.pos;
@@ -75,14 +69,17 @@ std::ostream& operator<<(std::ostream& os, const VItem& v) {
     return os;
 };
 
+//returns 'word'
 std::string VItem::getWord() const {
     return word;
 }
 
+//sets 'word' to string parameter
 void VItem::setWord(std::string w) {
     word = w;
 }
 
+//returns 'pos'
 std::string VItem::getPOS() const {
     return pos;
 }
@@ -100,6 +97,7 @@ std::string VItem::findPOS(std::string w) {
     }
     if (p == "") {
         std::invalid_argument(w + " is not a recognized word in the vocabulary.");
+        return "error";
     }
     pos = p;
     return pos;
@@ -136,4 +134,3 @@ VItem * vocab() {
     vocab[10] = VItem("the", "article");
     return vocab;
 };
-

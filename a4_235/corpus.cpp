@@ -3,29 +3,26 @@
  * Author: Julian Tutuncu-Macias
  * Date Created: 6/23/2017
  * Course: Spring 2017, CSCI 235-03, Mon & Wed 5:35-6:50pm
- * Professor: Michael Garod
+ * Professors: William Sakas, Michael Garod
  * Purpose: "Assignment 4"
  * Description: implements all class and function definitions in corpus.h
 */
 
 #include "corpus.h"
 
+//declares sentence array
 Corpus::Corpus() {
     Sentence sentences[100];
-}
-
-Corpus::~Corpus() {
-    //delete sentences;
 }
 
 //initializes a Corpus object with n randomly generated sentences
 Corpus::Corpus(int n) {
     for(int i = 0; i < n; ++i) {
         this->sentences[i] = Sentence((rand()%2));
-        //std::cout << sentences[i] << std::endl;
     }
 }
 
+//takes each line from input stream, passes into each sentence in private member array
 std::istream& operator>>(std::istream& is, Corpus& c) {
     std::string temp;
     int i = 0;
@@ -46,6 +43,7 @@ std::ostream& operator<<(std::ostream& os, const Corpus& c) {
   return os;
 };
 
+//translates each sentence in private member array
 Corpus Corpus::translate(VItem v[]) {
     for (int i = 0; i < (sizeof(sentences)/sizeof(*sentences)); ++i) {
   	sentences[i].translate();

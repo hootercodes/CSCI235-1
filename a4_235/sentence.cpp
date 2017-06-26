@@ -3,49 +3,46 @@
  * Author: Julian Tutuncu-Macias
  * Date Created: 6/22/2017
  * Course: Spring 2017, CSCI 235-03, Mon & Wed 5:35-6:50pm
- * Professor: Michael Garod
+ * Professors: William Sakas, Michael Garod
  * Purpose: "Assignment 4"
  * Description: implements all class and function definitions in sentence.h
 */
 
 #include "sentence.h"
 
+//declares VItem array, sets length to 0
 Sentence::Sentence() {
     VItem words[MAX_WORDS];
     length = 0;
 }
 
-Sentence::~Sentence() {
-   //delete words; 
-}
-
-/* randomly generates a sentence, with the passed boolean r determining if 
- * the sentence will be a declarative statement or a question*/
+/* randomly generates a sentence according to the rules of 'Eng--', with the 
+ * passed boolean r determining if the sentence will be a declarative statement
+ * or a question*/
 Sentence::Sentence(bool r) {
-    //VItem* words;
     int i = 0;
-    if (r) {
-        if(rand()%2){
+    if (r) { //will produce a declarative statement
+
+        if(rand()%2){ //may or may not add an article
             words[i] = VItem("article", 0);
-            i++;
+            ++i;
         }
-        while(rand() % 2){
+        while(rand() % 2){ //adds a random number of adjectives
             words[i] = VItem("adjective", 0);
             ++i;
         }
-        words[i] = VItem("noun", 1);
+        words[i] = VItem("noun", 1); //adds a noun
         ++i;
-        words[i] = VItem("verb", 0);
-        if(words[i].getWord() == "is") {
-           ++i;
-           words[i] = VItem("adjective", 0);
+        words[i] = VItem("verb", 0); //adds a verb
+        ++i;
+        if(words[i-1].getWord() == "is") { //checks if the verb just made was "is"
+           words[i] = VItem("adjective", 0); //adds a single adjective
            ++i;
         }
         else {
-           ++i;
-           if(rand()%2){
+           if(rand()%2){ //may or may not add an article
                words[i] = VItem("article", 0);
-               i++;
+               ++i;
            }
            while(rand() % 2){
                 words[i] = VItem("adjective", 0);
@@ -60,7 +57,7 @@ Sentence::Sentence(bool r) {
         ++i;
         if(rand()%2){
             words[i] = VItem("article", 0);
-            i++;
+            ++i;
         }
         while(rand() % 2){
             words[i] = VItem("adjective", 0);
@@ -74,9 +71,9 @@ Sentence::Sentence(bool r) {
     length = i;
 }
 
+//puts each word from stream into a new VItem in the 'words' array
 std::istream& operator>>(std::istream& is, Sentence& s) {
     std::string word;
-    VItem* words;
     int i = 0;
     while(getline(is, word, ' ')) {
        std::stringstream ss;
@@ -88,7 +85,7 @@ std::istream& operator>>(std::istream& is, Sentence& s) {
     return is;
 };
 
-//returns Date in MM/DD/YYYY format to output stream
+//returns each word that is not an empty string to output stream
 std::ostream& operator<<(std::ostream& os, const Sentence& s) {
     for (int i = 0; i < s.length; ++i) {
         if(s.words[i].getWord() != "") {
@@ -98,21 +95,20 @@ std::ostream& operator<<(std::ostream& os, const Sentence& s) {
     return os;
 };
 
-VItem Sentence::getVItem(int i) {
-    return words[i];
-}
-
+//translates the sentence from Eng-- to Eng++
 Sentence Sentence::translate() {
     
-    bool question = (words[0].getWord() == "is");
+    bool question = (words[0].getWord() == "is");/* determines whether sentence 
+                                                  * is a declarative statement 
+                                                  *  a question */
     bool subject = true;
     VItem temp;
     int j;
     
-    for (int i = 0; i < length; ++i) {
+    for (int i = 0; i < length; ++i) {//checks Part of Speech of each word and translates accordingly
         if(words[i].getPOS() == "noun") {
             std::string suffix;
-            if (subject) {
+            if (subject) { //checks if subject of sentence has already been translated
                 words[i].setWord(words[i].getWord() + "-ga");
                 subject = false;
             }
@@ -121,7 +117,7 @@ Sentence Sentence::translate() {
             }
         }
         else if (words[i].getPOS() == "adjective") {
-
+            //does nothing
         }
         else if (words[i].getPOS() == "verb") {
             if(question) {
@@ -138,6 +134,7 @@ Sentence Sentence::translate() {
         }
     }
     
+    //moves verb to end of sentence
     for(; j < length-1; ++j) {
         words[j] = words[j+1];
     }

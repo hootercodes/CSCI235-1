@@ -3,7 +3,7 @@
  * Author: Julian Tutuncu-Macias
  * Date Created: 6/22/2017
  * Course: Spring 2017, CSCI 235-03, Mon & Wed 5:35-6:50pm
- * Professor: Michael Garod
+ * Professors: William Sakas, Michael Garod
  * Purpose: "Assignment 4"
  * Description: defines VItem class
 */
@@ -19,7 +19,6 @@
 class VItem {
 public:
      VItem();
-     ~VItem();
      VItem(std::string w);
      VItem(std::string p, int s);
      VItem(std::string w, std::string p);

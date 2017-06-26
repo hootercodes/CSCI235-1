@@ -3,7 +3,7 @@
  * Author: Julian Tutuncu-Macias
  * Date Created: 6/22/2017
  * Course: Spring 2017, CSCI 235-03, Mon & Wed 5:35-6:50pm
- * Professor: Michael Garod
+ * Professors: William Sakas, Michael Garod
  * Purpose: "Assignment 4"
  * Description: creates 100 sentences in Eng--, translates each of them to Eng++
 */
@@ -17,41 +17,28 @@ Corpus translate (Corpus c, VItem v[]);
  */
 int main(int argc, char** argv) {
     
-    srand (time(NULL));
-
-    Corpus eng; //eng--
-    Corpus ENG; //eng++
+    srand (time(NULL)); //resets seed of random generator
     
-    std::ifstream is;
-    is.open("eng--.txt");
-    std::ofstream os;
-    os.open("eng++.txt");
+    std::ofstream eng_mm;
+    eng_mm.open("eng--.txt");
+    std::ofstream eng_pp;
+    eng_pp.open("eng++.txt");
     
-    is >> eng;
-    ENG = translate(eng, vocab());
-    os << ENG;
-    /*
-    Corpus rando(100);
-    Corpus randi;
+    Corpus random_eng_mm(100); //100 randomly generated Eng-- sentences
+    Corpus random_eng_pp; //empty Eng++ Corpus
+    random_eng_pp = translate(random_eng_mm, vocab()); //translates Eng-- to Eng++
+    eng_mm << random_eng_mm;
+    std::cout << "eng--.txt has been created." << std::endl;
+    eng_pp << random_eng_pp;
+    std::cout << "eng++.txt has been created." << std::endl;
     
-    std::ofstream randos;
-    randos.open("randin.txt");
-    randos << rando;
-    
-    std::ifstream randis;
-    randis.open("randin.txt");
-    randis >> randi;
-    
-    randi = translate(randi, vocab());
-    os << randi << std::endl;
-    */
-    is.close();
-    os.close();
+    eng_mm.close();
+    eng_pp.close();
      
     return 0;
 };
 
-
+//calls translate on the passed corpus value
 Corpus translate (Corpus c, VItem v[]) {
     c.translate(v);
     return c;
